@@ -71,10 +71,10 @@ public class ExcelService {
                     XSSFCell name = xssfRow.getCell(1);
                     XSSFCell age = xssfRow.getCell(2);
                     XSSFCell score = xssfRow.getCell(3);
-                    student.setNo(getValue(no));
-                    student.setName(getValue(name));
-                    student.setAge(getValue(age));
-                    student.setScore(Float.valueOf(getValue(score)));
+//                    student.setNo(getValue(no));
+//                    student.setName(getValue(name));
+//                    student.setAge(getValue(age));
+//                    student.setScore(Float.valueOf(getValue(score)));
                     list.add(student);
                 }
             }
@@ -109,10 +109,10 @@ public class ExcelService {
                     HSSFCell name = hssfRow.getCell(1);
                     HSSFCell age = hssfRow.getCell(2);
                     HSSFCell score = hssfRow.getCell(3);
-                    student.setNo(getValue(no));
-                    student.setName(getValue(name));
-                    student.setAge(getValue(age));
-                    student.setScore(Float.valueOf(getValue(score)));
+//                    student.setNo(getValue(no));
+//                    student.setName(getValue(name));
+//                    student.setAge(getValue(age));
+//                    student.setScore(Float.valueOf(getValue(score)));
                     list.add(student);
                 }
             }

@@ -5,11 +5,13 @@ import java.util.List;
 
 import config.Common;
 import service.ExcelService;
+import service.StudentService;
 import model.Student;
 import com.jfinal.core.Controller;
 
 public class HelloController extends Controller {
-  public void index() throws IOException {
+	private static StudentService service = new StudentService();
+    public void index() throws IOException {
 	  String excel2003_2007 = Common.STUDENT_INFO_XLS_PATH;
       String excel2010 = Common.STUDENT_INFO_XLSX_PATH;
       // read the 2003-2007 excel
@@ -22,11 +24,8 @@ public class HelloController extends Controller {
       System.out.println("======================================");
       // read the 2010 excel
       List<Student> list1 = new ExcelService().readExcel(excel2010);
-      if (list1 != null) {
-          for (Student student : list1) {
-              System.out.println("No. : " + student.getNo() + ", name : " + student.getName() + ", age : " + student.getAge() + ", score : " + student.getScore());
-          }
-      }
-	  renderText("Hello World");
+      List<Student> students = service.getAllStudents();
+      setAttr("students", students);
+	  render("template.html");
   } 
 }

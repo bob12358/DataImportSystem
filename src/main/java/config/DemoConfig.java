@@ -10,12 +10,14 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 
 import controller.HelloController;
+import model.Student;
 
 public class DemoConfig extends JFinalConfig {
 	
 	
 	@Override
 	public void configConstant(Constants me) {
+		me.setEncoding("UTF-8");
 		me.setDevMode(true);
 	}
 
@@ -35,11 +37,12 @@ public class DemoConfig extends JFinalConfig {
 		me.add(druidPlugin);
 		ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(druidPlugin);
 	    me.add(activeRecordPlugin);
+	    activeRecordPlugin.addMapping("tbl_student", Student.class);
 	}
 
 	@Override
 	public void configRoute(Routes me) {
-		me.add("hello",HelloController.class);
+		me.add("hello",HelloController.class,"/");
 	}
 
 }
