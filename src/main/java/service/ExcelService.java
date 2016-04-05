@@ -19,23 +19,23 @@ import config.Common;
 import model.Student;
 import util.Util;
 
-public class ExcelService {
+public class ExcelService<E> {
     /**
      * read the Excel file
      * @param path the path of the Excel file
      * @return
      * @throws IOException
      */
-    public List<model.Student> readExcel(String path) throws IOException {
+    public List<E> readExcel(String path) throws IOException {
         if (path == null || Common.EMPTY.equals(path)) {
             return null;
         } else {
             String postfix = Util.getPostfix(path);
             if (!Common.EMPTY.equals(postfix)) {
                 if (Common.OFFICE_EXCEL_2003_POSTFIX.equals(postfix)) {
-                    return readXls(path);
+                    //return readXls(path);
                 } else if (Common.OFFICE_EXCEL_2010_POSTFIX.equals(postfix)) {
-                    return readXlsx(path);
+                   // return readXlsx(path);
                 }
             } else {
                 System.out.println(path + Common.NOT_EXCEL_FILE);
@@ -50,12 +50,11 @@ public class ExcelService {
      * @return
      * @throws IOException
      */
-    public List<Student> readXlsx(String path) throws IOException {
+    public List<Object> readXlsx(String path) throws IOException {
         System.out.println(Common.PROCESSING + path);
         InputStream is = new FileInputStream(path);
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-        Student student = null;
-        List<Student> list = new ArrayList<Student>();
+        List<Object> data = new ArrayList<Object>();
         // Read the Sheet
         for (int numSheet = 0; numSheet < xssfWorkbook.getNumberOfSheets(); numSheet++) {
             XSSFSheet xssfSheet = xssfWorkbook.getSheetAt(numSheet);
@@ -66,20 +65,18 @@ public class ExcelService {
             for (int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++) {
                 XSSFRow xssfRow = xssfSheet.getRow(rowNum);
                 if (xssfRow != null) {
-                    student = new Student();
-                    XSSFCell no = xssfRow.getCell(0);
-                    XSSFCell name = xssfRow.getCell(1);
-                    XSSFCell age = xssfRow.getCell(2);
-                    XSSFCell score = xssfRow.getCell(3);
-//                    student.setNo(getValue(no));
-//                    student.setName(getValue(name));
-//                    student.setAge(getValue(age));
-//                    student.setScore(Float.valueOf(getValue(score)));
-                    list.add(student);
+                	int cellNum = xssfRow.getPhysicalNumberOfCells();
+                	List<Object> rowData = new ArrayList<Object>();
+                 	for(int cellNo = 1 ;cellNo<cellNum;cellNo++) {
+                		XSSFCell cell = xssfRow.getCell(cellNo);
+                		rowData.add(getValue(cell));
+                	}
+                 	data.add(rowData);
+                    
                 }
             }
         }
-        return list;
+        return data;
     }
 
     /**
@@ -93,7 +90,7 @@ public class ExcelService {
         InputStream is = new FileInputStream(path);
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         Student student = null;
-        List<Student> list = new ArrayList<Student>();
+        List<Object> data = new ArrayList<Object>();
         // Read the Sheet
         for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
             HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
