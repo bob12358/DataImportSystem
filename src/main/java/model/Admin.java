@@ -1,0 +1,1 @@
+package model;import java.io.Serializable;import com.jfinal.plugin.activerecord.Model;public class Admin extends Model<Admin> implements Serializable {	public static final Admin dao = new Admin();		private Integer id;	}
