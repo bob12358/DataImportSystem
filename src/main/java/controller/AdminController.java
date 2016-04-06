@@ -70,8 +70,8 @@ public class AdminController extends BaseController {
 				error(message);
 				return;
 			} else {
-				setSessionAttr(admin.getStr("id"), admin);
-				System.out.println(((Admin) getSessionAttr("1")).getInt("id"));
+				//setSessionAttr(admin.getStr("id"), admin);
+				//System.out.println(((Admin) getSessionAttr("1")).getInt("id"));
 				success(admin);
 				return;
 			}

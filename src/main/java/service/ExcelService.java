@@ -72,7 +72,6 @@ public class ExcelService<E> {
                 		rowData.add(getValue(cell));
                 	}
                  	data.add(rowData);
-                    
                 }
             }
         }
@@ -90,7 +89,7 @@ public class ExcelService<E> {
         InputStream is = new FileInputStream(path);
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
         Student student = null;
-        List<Object> data = new ArrayList<Object>();
+        List<Student> list = new ArrayList<Student>();
         // Read the Sheet
         for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
             HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);

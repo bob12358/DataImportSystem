@@ -6,11 +6,14 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.json.IJsonFactory;
+import com.jfinal.json.Json;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 
+import common.MyJson;
 import controller.AdminController;
 import controller.DatasetController;
 import controller.HelloController;
@@ -26,6 +29,14 @@ public class SystemConfig extends JFinalConfig {
 		me.setEncoding("UTF-8");
 		PropKit.use("config.txt");
 		me.setDevMode(PropKit.getBoolean("devMode",false));
+		
+		me.setJsonFactory(new IJsonFactory() {
+			
+			@Override
+			public Json getJson() {
+				return new MyJson();
+			}
+		});
 	}
 
 	@Override
