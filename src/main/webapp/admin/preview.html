@@ -25,8 +25,7 @@
 <link rel="stylesheet" href="/assets/css/custom.css">
 
 
-<script src="/assets/js/jquery-1.11.1.min.js"></script>
-<script src="/assets/js/jquery.serialize-object.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -612,7 +611,11 @@
 				
 				<div class="modal-body">
 				<div class="row">
-				  <div class="col-md-6"><label for="field-1" class="control-label">列名</label></div>
+				  <div class="col-md-6"><label for="field-1" class="control-label">数据集名</label></div>
+				   <div class="col-md-6"><input id="input-dataset-name" name="datasetName" type="text" class="form-control" id="field-1" placeholder="" /></div>
+				</div>
+				<div class="row" style="margin-top:10px;">
+				  <div class="col-md-6"><label for="field-1" class="control-label">名称</label></div>
 				   <div class="col-md-6"><label for="field-2" class="control-label">类型</label></div>
 				</div>
 				<form action="/dataset/add"  id="form-modal-dataset" name="form-modal-dataset" >
@@ -621,7 +624,7 @@
 							
 							<div class="form-group">
 								
-								<input id="input-column-name" name="dataset[0][name]" type="text" class="form-control" id="field-1" placeholder="" />
+								<input id="input-column-name" name="column[0][name]" type="text" class="form-control" id="field-1" placeholder="" />
 							</div>	
 							
 						</div>
@@ -630,16 +633,42 @@
 							
 							<div class="form-group">	
 								
-								<select class="form-control" id="input-column-type" name="dataset[0][type]">
-											<option>字符串</option>
-											<option>整形</option>
-											<option>浮点型</option>
-											<option>时间</option>
+								<select class="form-control" id="input-column-type" name="column[0][type]">
+											<option value="string">字符串</option>
+											<option value="int">整形</option>
+											<option value="double">浮点型</option>
+											<option value="datetime">时间</option>
 								</select>
 							</div>	
 						
 						</div>
 					</div>
+					
+					<div class="row">
+						<div class="col-md-6">
+							
+							<div class="form-group">
+								
+								<input id="input-column-name" name="column[1][name]" type="text" class="form-control" id="field-1" placeholder="" />
+							</div>	
+							
+						</div>
+						
+						<div class="col-md-6">
+							
+							<div class="form-group">	
+								
+								<select class="form-control" id="input-column-type" name="column[1][type]">
+											<option value="string">字符串</option>
+											<option value="int">整形</option>
+											<option value="double">浮点型</option>
+											<option value="datetime">时间</option>
+								</select>
+							</div>	
+						
+						</div>
+					</div>
+					
 					
 				
 					
@@ -649,7 +678,7 @@
 				<div class="modal-footer">
 				    <button type="button" class="btn btn-success  pull-left" id="btn-modal-add-column" >添加列</button>
 					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<input  type="submit" class="btn btn-info" value="Save changes" />
+					<input id="btn-dataset-add"  type="button" class="btn btn-info" value="Save changes" />
 				</div>
 									</form>
 			</div>
@@ -662,6 +691,7 @@
 
 	<!-- Bottom Scripts -->
 	<script src="/assets/js/jquery-1.11.1.min.js"></script>
+	<script src="/assets/js/jquery.serialize-object.js"></script>
 	<script src="/assets/js/bootstrap.min.js"></script>
 	<script src="/assets/js/TweenMax.min.js"></script>
 	<script src="/assets/js/resizeable.js"></script>
@@ -699,16 +729,22 @@
 										});
 	
 	$("#btn-modal-add-column").click(function() {
-		//$("#form-modal-dataset").submit();
-
-		var datasets = $("form#form-modal-dataset").serializeObject();
-		alert(JSON.Stringify(datasets));
-		/*
+		var rowIndex = $("#form-modal-dataset .row").length;
+		console.log(rowIndex);
+		var row = '<div class="row"><div class="col-md-6"><div class="form-group"><input id="input-column-name" name="column['+rowIndex+'][name]" type="text" class="form-control" placeholder=""></div>	</div><div class="col-md-6"><div class="form-group">	<select class="form-control" id="input-column-type" name="column['+rowIndex+'][type]"><option value="string">字符串</option><option value="int">整形</option><option value="double">浮点型</option><option value="datetime">时间</option></select></div></div></div>';
+		$("#form-modal-dataset").append(row);
+	})
+	
+	$("#btn-dataset-add").click(function() {
+		var columns = $("form#form-modal-dataset").serializeJSON();
+		var datasetName = $("#input-dataset-name").val();
+		
 		$.ajax({
 			type: "POST",
 			url: "/dataset/add",
 			data: {
-				"datasets":  JSON.stringify(datasets)
+				"columns":  columns,
+				"datasetName": datasetName
 			},
 			success: function() {
 				alert("dsadas");
@@ -717,7 +753,6 @@
 				alert(JSON.stringify(err));
 			}
 		})
-		*/
 	})
 					</script>
 

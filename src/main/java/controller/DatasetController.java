@@ -3,6 +3,10 @@ package controller;
 import java.util.List;
 import java.util.Map;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.kit.HttpKit;
 import com.jfinal.kit.JsonKit;
 
@@ -24,12 +28,15 @@ public class DatasetController extends BaseController {
     
     public void add(){
     	try {
-    		String test = HttpKit.readData(getRequest());
-    		String request = getPara("request");
-	    	Map<String,String> map = JsonKit.parse(test,Map.class);
-	    	for (String value : map.values()) {  
-	    	    System.out.println("Value = " + value);  
-	    	}
+    		String str_columns = getPara("columns");
+    		String datasetName = getPara("datasetName");
+    		System.out.println("cplumns:"+ str_columns);
+    		//String str_datasets = "{'dataset':[{'name':'2312312','type':'字符串'}]}";
+    		JSONObject obj = (JSONObject) JSONObject.parse(str_columns);
+    		System.out.println(str_columns);
+    		String str_json_columns = obj.getJSONArray("column").toJSONString();
+    	    List columns = JSON.parseArray(str_json_columns, DatasetColumn.class);
+    	    DatasetService.createDataset(columns,datasetName);
     	} catch(Exception exception) {
     		exception.printStackTrace();
     	}

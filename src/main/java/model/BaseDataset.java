@@ -17,12 +17,12 @@ public abstract class BaseDataset<M extends BaseDataset<M>> extends Model<M> imp
 		return get("id");
 	}
 
-	public void setDatasetName(java.lang.String datasetName) {
-		set("dataset_name", datasetName);
+	public void setName(java.lang.String datasetName) {
+		set("name", datasetName);
 	}
 
-	public java.lang.String getDatasetName() {
-		return get("dataset_name");
+	public java.lang.String getName() {
+		return get("name");
 	}
 
 	public void setCreatedTime(java.lang.Integer createdTime) {
