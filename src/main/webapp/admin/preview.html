@@ -11,8 +11,7 @@
 <title>Xenon - Blank Page</title>
 
 <link rel="stylesheet"
-	href="http://fonts.useso.com/css?family=Arimo:400,700,400italic">
-<link rel="stylesheet" href="/assets/css/fonts/linecons/css/linecons.css">
+	href="/assets/css/fonts/linecons/css/linecons.css">
 <link rel="stylesheet"
 	href="/assets/css/fonts/fontawesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="/assets/css/bootstrap.css">
@@ -25,7 +24,7 @@
 <link rel="stylesheet" href="/assets/css/custom.css">
 
 
-<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/assets/js/jquery-1.11.1.min.js"></script>
 
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -52,7 +51,8 @@
 
 						<div class="user-image">
 							<a href="extra-profile.html"> <img
-								src="/assets/images/user-2.png" class="img-responsive img-circle" />
+								src="/assets/images/user-2.png"
+								class="img-responsive img-circle" />
 							</a>
 						</div>
 
@@ -175,16 +175,15 @@
 				<ul id="main-menu" class="main-menu">
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-					<li><a href="/admin/getdata"> <i class="linecons-cog"></i>
+					<li><a href="/admin/export"> <i class="linecons-cog"></i>
 							<span class="title">获取数据</span>
 					</a></li>
-					<li><a href="/admin/preview"> <i
-							class="linecons-desktop"></i> <span class="title">浏览数据</span>
+					<li><a href="/admin/preview"> <i class="linecons-desktop"></i>
+							<span class="title">浏览数据</span>
 					</a></li>
 					<li><a href="/admin/importexcel"> <i class="linecons-note"></i>
 							<span class="title">导入数据</span>
 					</a></li>
-
 				</ul>
 
 			</div>
@@ -349,10 +348,12 @@
 									src="/assets/images/flags/flag-al.png" alt="flag-al" /> Shqip
 							</a></li>
 							<li class="active"><a href="#"> <img
-									src="/assets/images/flags/flag-uk.png" alt="flag-uk" /> English
+									src="/assets/images/flags/flag-uk.png" alt="flag-uk" />
+									English
 							</a></li>
 							<li><a href="#"> <img
-									src="/assets/images/flags/flag-de.png" alt="flag-de" /> Deutsch
+									src="/assets/images/flags/flag-de.png" alt="flag-de" />
+									Deutsch
 							</a></li>
 							<li><a href="#"> <img
 									src="/assets/images/flags/flag-fr.png" alt="flag-fr" />
@@ -441,23 +442,24 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title"></h3>
-					
+
 					<div class="panel-options">
 						<a href="#" data-toggle="panel"> <span class="collapse-icon">–</span>
 							<span class="expand-icon">+</span>
-						</a> <a href="#" data-toggle="remove"> × </a>
+						</a> <a href="#" data-toggle="remove" > × </a>
 					</div>
 				</div>
 				<div class="panel-body">
 
-<div id="btn-add-dataset">
-					<button class="btn btn-success btn-icon">
-						<i class="fa-check"></i> <span>添加数据集</span>
-					</button>
+					<div id="btn-add-dataset">
+						<button class="btn btn-success btn-icon">
+							<i class="fa-check"></i> <span>添加数据集</span>
+						</button>
 					</div>
-	
-					
-					<table id="example-1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+
+					<table id="example-1" class="table table-striped table-bordered"
+						cellspacing="0" width="100%">
 						<thead>
 							<tr>
 								<th>序号</th>
@@ -465,20 +467,21 @@
 								<th>姓名</th>
 							</tr>
 						</thead>
-					
 
-					
+
+
 						<tbody>
-						<#list datasets as dataset>
+							<#list datasets as dataset>
 							<tr>
 								<td>${dataset.id}</td>
-								<td>${dataset.name}</td>
-								<td>${dataset.created_time}</div>
+								<td><a href="/dataset/${dataset.id}">${dataset.name}</a></td>
+								<td>${(dataset.created_time*1000)?number_to_datetime}
+									</div>
 							</tr>
 							</#list>
 						</tbody>
 					</table>
-					
+
 				</div>
 			</div>
 
@@ -563,34 +566,23 @@
 																	'mobile-is-visible');
 												});
 							});
-			jQuery(document)
-			.ready(
+			jQuery(document).ready(
 					function($) {
-						$("#example-1")
-								.dataTable(
-										{
-											aLengthMenu : [
-													[
-															10,
-															25,
-															50,
-															100,
-															-1 ],
-													[
-															10,
-															25,
-															50,
-															100,
-															"All" ] ]
-										});
+						$("#example-1").dataTable(
+								{
+									aLengthMenu : [ [ 10, 25, 50, 100, -1 ],
+											[ 10, 25, 50, 100, "All" ] ]
+								});
 					});
-			
+
 			$("#btn-add-dataset").click(function() {
-				jQuery('#modal-add-dataset').modal('show', {backdrop: 'static'});
+				jQuery('#modal-add-dataset').modal('show', {
+					backdrop : 'static'
+				});
 			});
 		</script>
 
-		
+
 
 		<a href="#" class="mobile-chat-toggle"> <i
 			class="linecons-comment"></i> <span class="num">6</span> <span
@@ -599,97 +591,133 @@
 
 		<!-- End: Footer Sticked Chat -->
 	</div>
-	
-	<div class="modal fade" id="modal-add-dataset" aria-hidden="true" style="display: none;">
+
+	<div class="modal fade" id="modal-add-dataset" aria-hidden="true"
+		style="display: none;">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				
+
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<button type="button" class="close" data-dismiss="modal" id="close-addDataset-panel"
+						aria-hidden="true">×</button>
 					<h4 class="modal-title">添加数据集</h4>
 				</div>
-				
+
 				<div class="modal-body">
-				<div class="row">
-				  <div class="col-md-6"><label for="field-1" class="control-label">数据集名</label></div>
-				   <div class="col-md-6"><input id="input-dataset-name" name="datasetName" type="text" class="form-control" id="field-1" placeholder="" /></div>
-				</div>
-				<div class="row" style="margin-top:10px;">
-				  <div class="col-md-6"><label for="field-1" class="control-label">名称</label></div>
-				   <div class="col-md-6"><label for="field-2" class="control-label">类型</label></div>
-				</div>
-				<form action="/dataset/add"  id="form-modal-dataset" name="form-modal-dataset" >
 					<div class="row">
 						<div class="col-md-6">
-							
-							<div class="form-group">
-								
-								<input id="input-column-name" name="column[0][name]" type="text" class="form-control" id="field-1" placeholder="" />
-							</div>	
-							
+							<label for="field-1" class="control-label">数据集名</label>
 						</div>
-						
 						<div class="col-md-6">
-							
-							<div class="form-group">	
-								
-								<select class="form-control" id="input-column-type" name="column[0][type]">
-											<option value="string">字符串</option>
-											<option value="int">整形</option>
-											<option value="double">浮点型</option>
-											<option value="datetime">时间</option>
-								</select>
-							</div>	
-						
+							<input id="input-dataset-name" name="datasetName" type="text"
+								class="form-control" id="field-1" placeholder="" />
 						</div>
 					</div>
-					
-					<div class="row">
+					<div class="row" style="margin-top: 10px;">
 						<div class="col-md-6">
-							
-							<div class="form-group">
-								
-								<input id="input-column-name" name="column[1][name]" type="text" class="form-control" id="field-1" placeholder="" />
-							</div>	
-							
+							<label for="field-1" class="control-label">名称</label>
 						</div>
-						
 						<div class="col-md-6">
-							
-							<div class="form-group">	
-								
-								<select class="form-control" id="input-column-type" name="column[1][type]">
-											<option value="string">字符串</option>
-											<option value="int">整形</option>
-											<option value="double">浮点型</option>
-											<option value="datetime">时间</option>
-								</select>
-							</div>	
-						
+							<label for="field-2" class="control-label">类型</label>
 						</div>
 					</div>
-					
-					
-				
-					
-					
+					<form action="/dataset/add" id="form-modal-dataset"
+						name="form-modal-dataset">
+						<div class="row">
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<input id="input-column-name" name="column[0][name]"
+										type="text" class="form-control" id="field-1" placeholder="" />
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<select class="form-control" id="input-column-type"
+										name="column[0][type]">
+										<option value="string">字符串</option>
+										<option value="int">整形</option>
+										<option value="double">浮点型</option>
+										<option value="datetime">时间</option>
+									</select>
+								</div>
+
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<input id="input-column-name" name="column[1][name]"
+										type="text" class="form-control" id="field-1" placeholder="" />
+								</div>
+
+							</div>
+
+							<div class="col-md-6">
+
+								<div class="form-group">
+
+									<select class="form-control" id="input-column-type"
+										name="column[1][type]">
+										<option value="string">字符串</option>
+										<option value="int">整形</option>
+										<option value="double">浮点型</option>
+										<option value="datetime">时间</option>
+									</select>
+								</div>
+
+							</div>
+						</div>
 				</div>
-				
+
 				<div class="modal-footer">
-				    <button type="button" class="btn btn-success  pull-left" id="btn-modal-add-column" >添加列</button>
+					<button type="button" class="btn btn-success  pull-left"
+						id="btn-modal-add-column">添加列</button>
 					<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-					<input id="btn-dataset-add"  type="button" class="btn btn-info" value="Save changes" />
+					<input id="btn-dataset-add" type="button" class="btn btn-info"
+						value="Save changes" />
 				</div>
-									</form>
+				</form>
 			</div>
 		</div>
 	</div>
 
-
-
-
+<div class="modal fade" style="text-align:center" id="modal-1">
+<div id="alert-window">
+								
+								
+								<div class="col-md-12">
+									<div class="alert alert-danger">
+										<div class="text"></div>
+									</div>
+								</div>
+								
+							</div>
+	</div>
+	
+	<div class="modal fade" style="text-align:center" id="modal-2">
+<div id="success-window">
+								
+								
+								<div class="col-md-12">
+									<div class="alert alert-success">
+										<div class="text"></div>
+									</div>
+								</div>
+								
+							</div>
+	</div>
 
 	<!-- Bottom Scripts -->
+	<script src="/assets/js/util.js"></script>
 	<script src="/assets/js/jquery-1.11.1.min.js"></script>
 	<script src="/assets/js/jquery.serialize-object.js"></script>
 	<script src="/assets/js/bootstrap.min.js"></script>
@@ -705,56 +733,71 @@
 	<script
 		src="/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
-					<script type="text/javascript">
-	jQuery(document)
-								.ready(
-										function($) {
-											$("#example-1")
-													.dataTable(
-															{
-																aLengthMenu : [
-																		[
-																				10,
-																				25,
-																				50,
-																				100,
-																				-1 ],
-																		[
-																				10,
-																				25,
-																				50,
-																				100,
-																				"All" ] ]
-															});
-										});
-	
-	$("#btn-modal-add-column").click(function() {
-		var rowIndex = $("#form-modal-dataset .row").length;
-		console.log(rowIndex);
-		var row = '<div class="row"><div class="col-md-6"><div class="form-group"><input id="input-column-name" name="column['+rowIndex+'][name]" type="text" class="form-control" placeholder=""></div>	</div><div class="col-md-6"><div class="form-group">	<select class="form-control" id="input-column-type" name="column['+rowIndex+'][type]"><option value="string">字符串</option><option value="int">整形</option><option value="double">浮点型</option><option value="datetime">时间</option></select></div></div></div>';
-		$("#form-modal-dataset").append(row);
-	})
-	
-	$("#btn-dataset-add").click(function() {
-		var columns = $("form#form-modal-dataset").serializeJSON();
-		var datasetName = $("#input-dataset-name").val();
-		
-		$.ajax({
-			type: "POST",
-			url: "/dataset/add",
-			data: {
-				"columns":  columns,
-				"datasetName": datasetName
-			},
-			success: function() {
-				alert("dsadas");
-			},
-			error: function(err) {
-				alert(JSON.stringify(err));
+	<script type="text/javascript">
+		jQuery(document).ready(
+				function($) {
+					$("#example-1").dataTable(
+							{
+								aLengthMenu : [ [ 10, 25, 50, 100, -1 ],
+										[ 10, 25, 50, 100, "All" ] ]
+							});
+				});
+
+		$("#btn-modal-add-column")
+				.click(
+						function() {
+							var rowIndex = $("#form-modal-dataset .row").length;
+							console.log(rowIndex);
+							var row = '<div class="row"><div class="col-md-6"><div class="form-group"><input id="input-column-name" name="column['+rowIndex+'][name]" type="text" class="form-control" placeholder=""></div>	</div><div class="col-md-6"><div class="form-group">	<select class="form-control" id="input-column-type" name="column['+rowIndex+'][type]"><option value="string">字符串</option><option value="int">整形</option><option value="double">浮点型</option><option value="datetime">时间</option></select></div></div></div>';
+							$("#form-modal-dataset").append(row);
+						})
+
+		$("#btn-dataset-add").click(function() {
+			var columns = $("form#form-modal-dataset").serializeJSON();
+			var datasetName = $("#input-dataset-name").val();
+			var tblNameReg = /^[a-zA-Z][a-zA-Z0-9]+$/;
+			
+			if(!tblNameReg.test(datasetName)) {
+				$('#alert-window .text').text("表名不合法！表名需以字母开头");
+				$('#modal-1').modal('show', {backdrop: 'fade'});
+				return;
 			}
+			
+			var columnsObj = JSON.parse(columns).column;
+            //判断列名是否合法
+			for(var num in columnsObj) {
+				var columnNameReg = /^[a-zA-Z]\w+$/;
+				if(!columnNameReg.test(columnsObj[num].name)) {
+					$('#alert-window .text').text("列名不合法！表名需以字母开头");
+					$('#modal-1').modal('show', {backdrop: 'fade'});
+				  	return ;
+				}
+			}
+			
+			$.ajax({
+				type : "POST",
+				url : "/dataset/add",
+				data : {
+					"columns" : columns,
+					"datasetName" : datasetName
+				},
+				success : function(data,status) {
+					if(data.code == 200) {
+						$('#close-addDataset-panel').click();
+						$('#success-window .text').text("添加数据集成功！");
+						$('#modal-2').modal('show', {backdrop: 'fade'});	
+					} else {
+						$('#alert-window .text').text("已存在相同数据集！");
+						$('#modal-1').modal('show', {backdrop: 'fade'});
+					}
+					
+				},
+				error : function(err) {
+					alert(JSON.stringify(err));
+				}
+			})
 		})
-	})
-					</script>
+	</script>
 
 	<!-- JavaScripts initializations and stuff -->
 	<script src="/assets/js/xenon-custom.js"></script>

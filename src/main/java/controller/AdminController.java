@@ -1,9 +1,19 @@
 package controller;
 
+import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
+import com.jfinal.kit.JsonKit;
+import com.jfinal.kit.PropKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Config;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.DbKit;
+import com.jfinal.plugin.druid.DruidPlugin;
 
 import common.BaseController;
+import interceptor.AdminInterceptor;
 import model.Admin;
 import model.BaseStudent;
 import model.Dataset;
@@ -15,7 +25,11 @@ import service.StudentService;
 import java.io.Console;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.apache.poi.hssf.extractor.ExcelExtractor;
 
@@ -28,19 +42,28 @@ public class AdminController extends BaseController {
 	public void index() {
 		render("getdata.html");
 	}
-
-	public void getdata() {
-		renderFreeMarker("getdata.html");
+	
+    @Before(AdminInterceptor.class)
+	public void preview() {
+		List<Dataset> datasets = DatasetService.getDataSetList();
+		setAttr("datasets", datasets);
+		renderFreeMarker("preview.html");
+	}
+    
+    @Before(AdminInterceptor.class)
+	public void export() {
+		renderFreeMarker("export.html");
 	}
 
+    @Before(AdminInterceptor.class)
 	public void importexcel() {
 		renderFreeMarker("importexcel.html");
 	}
 
-	public void preview() {
+	public void getdata() {
 		List<Dataset> datasets = new DatasetService().getDataSetList();
 		setAttr("datasets", datasets);
-		renderFreeMarker("preview.html");
+		renderFreeMarker("getdata.html");
 	}
 	
 
@@ -62,16 +85,14 @@ public class AdminController extends BaseController {
 		try {
 			admin = (Admin) Admin.dao.findFirst("select id from admin where username=? and password =?", username,
 					password);
-			System.out.println(admin);
 
-			System.out.println("admin:" + admin);
 			if (admin == null) {
 				message = "用户名或密码错误！";
 				error(message);
 				return;
 			} else {
-				//setSessionAttr(admin.getStr("id"), admin);
-				//System.out.println(((Admin) getSessionAttr("1")).getInt("id"));
+				String adminJson = JsonKit.toJson(admin);
+				setSessionAttr("admin",	 adminJson);
 				success(admin);
 				return;
 			}
@@ -80,17 +101,25 @@ public class AdminController extends BaseController {
 		}
 	}
 	
+	public  void logout() {
+		getSessionAttr("admin");
+		removeSessionAttr("admin");
+		redirect("/login");
+	}
+	
 	public void uploadExcel() {
-		
-		String uploadFilePath = getFile().getUploadPath();
 		try {
-			List<BaseStudent> students = new ExcelService().readExcel(uploadFilePath);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			String uploadFilePath = getFile().getUploadPath()+"\\"+ getFile().getFileName();
+//			String datasetId = getPara("datasetId");
+//			System.out.println("sdsad:"+datasetId);
+			List list = new ExcelService().readExcel(uploadFilePath);
+			DatasetService.addDataToDataset(list,"dbclass");
+		} catch (Exception e) {
+			error("导入出错");
 			e.printStackTrace();
 		}
 	}
+	
 	
 	
 }

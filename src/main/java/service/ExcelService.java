@@ -3,6 +3,7 @@ package service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,23 +20,23 @@ import config.Common;
 import model.Student;
 import util.Util;
 
-public class ExcelService<E> {
+public class ExcelService {
     /**
      * read the Excel file
      * @param path the path of the Excel file
      * @return
      * @throws IOException
      */
-    public List<E> readExcel(String path) throws IOException {
+    public List readExcel(String path) throws IOException {
         if (path == null || Common.EMPTY.equals(path)) {
             return null;
         } else {
             String postfix = Util.getPostfix(path);
             if (!Common.EMPTY.equals(postfix)) {
                 if (Common.OFFICE_EXCEL_2003_POSTFIX.equals(postfix)) {
-                    //return readXls(path);
+                    return readXls(path);
                 } else if (Common.OFFICE_EXCEL_2010_POSTFIX.equals(postfix)) {
-                   // return readXlsx(path);
+                   return readXlsx(path);
                 }
             } else {
                 System.out.println(path + Common.NOT_EXCEL_FILE);
@@ -50,7 +51,7 @@ public class ExcelService<E> {
      * @return
      * @throws IOException
      */
-    public List<Object> readXlsx(String path) throws IOException {
+    public List readXlsx(String path) throws IOException {
         System.out.println(Common.PROCESSING + path);
         InputStream is = new FileInputStream(path);
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
@@ -67,7 +68,7 @@ public class ExcelService<E> {
                 if (xssfRow != null) {
                 	int cellNum = xssfRow.getPhysicalNumberOfCells();
                 	List<Object> rowData = new ArrayList<Object>();
-                 	for(int cellNo = 1 ;cellNo<cellNum;cellNo++) {
+                 	for(int cellNo = 0 ;cellNo<cellNum;cellNo++) {
                 		XSSFCell cell = xssfRow.getCell(cellNo);
                 		rowData.add(getValue(cell));
                 	}
@@ -84,12 +85,11 @@ public class ExcelService<E> {
      * @return
      * @throws IOException
      */
-    public List<Student> readXls(String path) throws IOException {
+    public List readXls(String path) throws IOException {
         System.out.println(Common.PROCESSING + path);
         InputStream is = new FileInputStream(path);
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
-        Student student = null;
-        List<Student> list = new ArrayList<Student>();
+        List<Object> list = new ArrayList<Object>();
         // Read the Sheet
         for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
             HSSFSheet hssfSheet = hssfWorkbook.getSheetAt(numSheet);
@@ -100,16 +100,10 @@ public class ExcelService<E> {
             for (int rowNum = 1; rowNum <= hssfSheet.getLastRowNum(); rowNum++) {
                 HSSFRow hssfRow = hssfSheet.getRow(rowNum);
                 if (hssfRow != null) {
-                    student = new Student();
-                    HSSFCell no = hssfRow.getCell(0);
-                    HSSFCell name = hssfRow.getCell(1);
-                    HSSFCell age = hssfRow.getCell(2);
-                    HSSFCell score = hssfRow.getCell(3);
-//                    student.setNo(getValue(no));
-//                    student.setName(getValue(name));
-//                    student.setAge(getValue(age));
-//                    student.setScore(Float.valueOf(getValue(score)));
-                    list.add(student);
+                	List list2 = new ArrayList<String>();
+                	for(int cellNum = 0;cellNum<= hssfRow.getPhysicalNumberOfCells();cellNum++){
+                      list2.add(getValue(hssfRow.getCell(cellNum)));
+                	}
                 }
             }
         }
@@ -121,7 +115,9 @@ public class ExcelService<E> {
         if (xssfRow.getCellType() == xssfRow.CELL_TYPE_BOOLEAN) {
             return String.valueOf(xssfRow.getBooleanCellValue());
         } else if (xssfRow.getCellType() == xssfRow.CELL_TYPE_NUMERIC) {
-            return String.valueOf(xssfRow.getNumericCellValue());
+        	DecimalFormat df = new DecimalFormat("0");    
+            String strCell = df.format(xssfRow.getNumericCellValue());
+            return strCell;
         } else {
             return String.valueOf(xssfRow.getStringCellValue());
         }
@@ -132,7 +128,9 @@ public class ExcelService<E> {
         if (hssfCell.getCellType() == hssfCell.CELL_TYPE_BOOLEAN) {
             return String.valueOf(hssfCell.getBooleanCellValue());
         } else if (hssfCell.getCellType() == hssfCell.CELL_TYPE_NUMERIC) {
-            return String.valueOf(hssfCell.getNumericCellValue());
+        	DecimalFormat df = new DecimalFormat("0");    
+            String strCell = df.format(hssfCell.getNumericCellValue());
+            return strCell;
         } else {
             return String.valueOf(hssfCell.getStringCellValue());
         }

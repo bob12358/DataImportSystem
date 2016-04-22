@@ -1,5 +1,7 @@
 package config;
 
+import javax.sql.DataSource;
+
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -16,7 +18,6 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import common.MyJson;
 import controller.AdminController;
 import controller.DatasetController;
-import controller.HelloController;
 import controller.LoginController;
 import model.Student;
 import model._MappingKit;
@@ -56,6 +57,7 @@ public class SystemConfig extends JFinalConfig {
 	@Override
 	public void configPlugin(Plugins me) {
 		DruidPlugin druidPlugin = createDruidPlugin();
+		DataSource dataSource = druidPlugin.getDataSource();
 		me.add(druidPlugin);
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(druidPlugin);
 	    me.add(arp);

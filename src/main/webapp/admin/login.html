@@ -10,7 +10,6 @@
 
 	<title>Xenon - Login Light</title>
 
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
 	<link rel="stylesheet" href="/assets/css/fonts/linecons/css/linecons.css">
 	<link rel="stylesheet" href="/assets/css/fonts/fontawesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/assets/css/bootstrap.css">
@@ -89,7 +88,7 @@
 								};
 	
 								$.ajax({
-									url: "admin/login",
+									url: "/admin/login",
 									method: 'POST',
 									dataType: 'json',
 									data: {
@@ -107,7 +106,7 @@
 												// Redirect after successful login page (when progress bar reaches 100%)
 												if(resp.code == 200)
 												{
-																									window.location.href = 'admin/index';
+																									window.location.href = '/admin/preview';
 																								}
 																						}
 										});
